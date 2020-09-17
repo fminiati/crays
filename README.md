@@ -1,2 +1,2 @@
 # craystransp
-Lagrangian cosmic-rays Transport code
+Lagrangian cosmic-rays transport code
