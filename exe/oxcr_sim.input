@@ -1,0 +1,59 @@
+#
+# input for crtransport code
+#
+# number of threads
+crt.num_threads = 4
+
+# initial/final time >/< icm_model initial/final time
+# pre-merger
+#crt.initial_time[Gyr]= 1.056e1
+#crt.final_time[Gyr]  = 1.280e1
+# major-merger
+crt.initial_time[Gyr]= 1.352e1
+crt.final_time[Gyr]  = 1.440e1
+# rebound-merger
+#crt.initial_time[Gyr]= 1.515e1
+#crt.final_time[Gyr]  = 1.670e1
+
+crt.max_num_steps    = 1000000
+crt.unit_of_time[Gyr]= 1.0e0
+
+crt.t_output_interval[Gyr]= 1.e-1
+crt.output_file           = oxcr_mjr_mrg.dat
+crt.output_sync_spectrum  = sync_mjr_mrg.dat
+crt.sync.nu_min[nu_crit]  = 1.e-2
+crt.sync.nu_max[nu_crit]  = 10
+crt.sync.num_nusync       = 30
+
+crt.CFL_number            = 5.e-1
+
+crt.icm_model.num_steps             = 26
+crt.icm_model.time[sec]             = 3.226e+17  3.331e+17  3.438e+17  3.528e+17  3.618e+17  3.728e+17  3.839e+17  4.06e+17   4.169e+17  4.208e+17  4.27e+17   4.367e+17  4.463e+17  4.547e+17  4.63e+17   4.688e+17  4.715e+17  4.758e+17  4.828e+17  4.94e+17   5.068e+17  5.158e+17  5.28e+17   5.325e+17  5.398e+17  5.515e+17  
+crt.icm_model.gas_num_dens[cm^-3]   = 0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      0.001      
+crt.icm_model.gas_temperature[keV]  = 8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        8.0        
+crt.icm_model.magnetic_field[G]     = 1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      1e-06      
+crt.icm_model.dv_turb_at_ell[km/sec]=-8.314     -1.492     -9.465     -13.35     -18.66     -22.04     -20.7      1.147      6.473      6.178      -3.628     -38.24     -49.92     9.655      39.1       19.62      11.89      3.864      -8.168     -25.9      -27.11     -14.89     -4.484     -6.03      -6.743     -7.757     
+crt.icm_model.ell_of_dv_turb[kpc]   = 111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      111.1      
+crt.icm_model.pwrlaw_idx_dv_turb    = 1.0        1.5        0.95       0.95       0.95       0.95       0.95       0.95       0.95       1.2        1.2        0.95       0.95       0.95       0.95       0.95       0.95       0.95       0.95       0.95       0.95       0.95       0.95       0.95       0.95       1.0
+
+#crt.icm_model.gas_temperature[keV]  = 1.e8   1.e8    1.e8
+#crt.icm_model.magnetic_field[G]     = 1.e-6  1.e-6   1.e-6
+#crt.icm_model.dv_turb_at_ell[km/sec]=-10.e0  -10.e0 10.e0
+#crt.icm_model.ell_of_dv_turb[kpc]   = 1.e0   1.e0    1.e0
+#crt.icm_model.pwrlaw_idx_dv_turb    = 1.e0   1.e0    1.e0
+
+crt.cr_model.mfp_at_p0[kpc]= 1.e-3
+crt.cr_model.p0_of_mfp[mc] = 1.e3
+crt.cr_model.pwrlaw_idx_mfp= 3.e-1
+
+crt.fc.p_minimum[mc] = 1.e0
+crt.fc.p_maximum[mc] = 1.e5
+crt.fc.num_nodes     = 1000 #0000
+
+crt.inj.time_injection_start[Gyr]= 13.52e0
+crt.inj.time_injection_end[Gyr]  = 13.62e0
+crt.inj.p0_injection[mc]   = 1.e1
+crt.inj.Gamma_injection[mc]= 1.e0
+crt.inj.index_injection    = 10
+crt.inj.max_fc_range       = 1.e18
+crt.inj.inj_multiplicity   = 100
