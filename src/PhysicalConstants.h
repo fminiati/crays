@@ -3,7 +3,7 @@
 #ifndef _PHYS_CONSTANTS_
 #define _PHYS_CONSTANTS_
 
-#include "mymacros.H"
+#include "Macros.H"
 
 namespace PhysConstCgs {
 
