@@ -1,6 +1,3 @@
-
-// somple macros F. Miniati 25.08.06
-
 #ifndef _MY_MACROS_
 #define _MY_MACROS_
 
@@ -9,9 +6,6 @@ using real_t = double;
 
 template <typename T>
 int SGN(const T t) {return (t>T(0) ? 1 : -1);};
-template <typename T>
-T ABS(const T t) {return (t>T(0) ? t : -t);}
-
 
 static constexpr auto zero   = (0.0e0);
 static constexpr auto half   = (0.5e0);
@@ -36,9 +30,5 @@ static constexpr auto small  = (1.e-6);
 static constexpr auto tiny   = (1.e-9);
 static constexpr auto hundred= (1.0e2);
 static constexpr auto huge   = (1.0e100);
-
-static constexpr auto MAXITER  = (30);
-static constexpr auto TOLERANCE=(1.e-6);
-static constexpr auto MAX_EXP  = (20);
 
 #endif

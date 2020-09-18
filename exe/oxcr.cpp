@@ -1,14 +1,6 @@
-//
-// integrator for cr-transport in momentum space
-// F. Miniati, (ZH) 08.12.2018
-//
-
-#include <cstdlib>
 #include <cstring>
-#include "FileParser.H"
-
-
-#include "CRTransport.H"
+#include "FileParser.h"
+#include "CRTransport.h"
 
 //using namespace cr_transport;
 

@@ -1,8 +1,7 @@
 OBJ = oxcr.o CRTransport.o
 
-CC     = gcc #/opt/local/bin/gcc-mp-9
-CXX    = g++ #/opt/local/bin/g++-mp-9 
-FC     = /opt/local/bin/gfortran-mp-9 
+CC     = /opt/local/bin/gcc-mp-10
+CXX    = /opt/local/bin/g++-mp-10 
 OPTS   = -std=c++17 -O2 #-g -Wall
 INCL   = -I/opt/local/include
 LIB    = -L/opt/local/lib
@@ -11,9 +10,6 @@ EXEDIR = ./
 
 .cpp.o:
 	$(CXX) -c $(INCL) $(OPTS) $<
-
-.f.o:
-	$(FC) $(OPTS) -c $<
 
 .c.o:
 	$(CC) $(OPTS) -c $<
@@ -28,7 +24,8 @@ clean:
 # list of dependencies
 #------------------------------------------------------------------------------
 
-#MicroLib.o: $(HDF5_INC)
+oxcr.o: ../exe/oxcr.cpp
+	$(CXX) $(EMI_INC) $(INCL) $(OPTS) -c ../exe/oxcr.cpp
 
 CRTransport.o: CRTransport.cpp
 	$(CXX) $(EMI_INC) $(INCL) $(OPTS) -c CRTransport.cpp
