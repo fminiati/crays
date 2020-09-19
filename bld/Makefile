@@ -27,7 +27,7 @@ OPTS   = -std=c++17 -O2 #-g -Wall
 INCL   = -I/opt/local/include -I./../src
 LIB    = -L/opt/local/lib
 LIBS   = $(LIB) -lm -lstdc++
-EXEDIR = ./
+EXEDIR = ../exe/
 
 .cpp.o:
 	$(CXX) -c $(INCL) $(OPTS) $<
