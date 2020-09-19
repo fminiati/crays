@@ -68,7 +68,6 @@ namespace cr_transport
         // solver
         void solve()
         {
-            //
             std::cout << " running from t=" << _t_init << " to " << _t_end << endl;
 
             // time-integration loop
@@ -77,7 +76,6 @@ namespace cr_transport
             auto t_beg = std::chrono::high_resolution_clock::now();
             while (t < _t_end && step < _max_step)
             {
-
                 const real_t dt = timestep();
                 std::cout << "step=" << step << std::endl;
 

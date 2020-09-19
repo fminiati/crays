@@ -141,10 +141,8 @@ namespace cr_transport
                         const real_t a_dt, const size_t a_beg,
                         const size_t a_stride, const size_t a_size)
         {
-
             for (size_t b = a_beg; b < a_size; b += a_stride)
             {
-
                 const real_t p = _pmin * exp(b * _dlp);
                 a_j[b].p = p;
                 if (p >= _inject._plo && p <= _inject._phi)
