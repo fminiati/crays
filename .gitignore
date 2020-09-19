@@ -31,3 +31,8 @@
 *.exe
 *.out
 *.app
+
+# Others
+*.dat
+.ipynb_checkpoints
+.DS_Store
