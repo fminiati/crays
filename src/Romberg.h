@@ -1,4 +1,3 @@
-
 //
 // Copyright (C) 2020 Francesco Miniati <francesco.miniati@gmail.com>
 //
@@ -33,7 +32,7 @@
 struct Romberg
 {
     real_t integral(const real_t a, const real_t b, const real_t tol,
-                    std::function<real_t(const real_t)> f, const string s = "")
+                    std::function<real_t(const real_t)> f, const std::string&& s={})
     {
         static const size_t ROMB_MAXITER = 20;
         static const size_t ROMB_MINITER = 3;

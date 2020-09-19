@@ -33,9 +33,9 @@
 using namespace Radiation;
 
 template <typename C>
-void plot_histo(const C &c, const size_t n, const string s = " ")
+void plot_histo(const C &c, const size_t n, const std::string&& s = {})
 {
-    std::cout << s << endl;
+    std::cout << s << '\n';
     real_t maxv{};
     for (auto v : c)
         maxv = std::max(maxv, v.f);
@@ -46,7 +46,7 @@ void plot_histo(const C &c, const size_t n, const string s = " ")
             std::cout << std::fixed
                       << std::setfill('-')
                       << std::setprecision(2)
-                      << v.p << " " << string(x, '*') << endl;
+                      << v.p << " " << std::string(x, '*') << '\n';
     }
 };
 
@@ -55,10 +55,10 @@ namespace cr_transport
 {
     using dfnode_t = std::vector<DistFunctNode>;
 
-    void CRTransport::setup(const string a_file)
+    void CRTransport::setup(const std::string a_file)
     {
         //
-        std::cout << " setup begins " << std::endl;
+        std::cout << " setup begins " << '\n';
 
         // read input file
         FileParser input(a_file);
@@ -201,40 +201,40 @@ namespace cr_transport
             _new_dt = 0.1 * _cfl / clng_rate * (exp(dlp) - one);
             assert(_new_dt > zero);
 
-            std::cout << " paramenters:" << std::endl;
-            std::cout << "        t_init:" << _t_init << std::endl;
-            std::cout << "         t_end:" << _t_end << std::endl;
-            std::cout << "     momentum-grid:" << std::endl;
-            std::cout << "       n-nodes:" << _num_nodes << std::endl;
-            std::cout << "     transport-coeff:" << std::endl;
-            std::cout << "         l_mfp:" << _lmfp << std::endl;
-            std::cout << "         p_mfp:" << _pmfp << std::endl;
-            std::cout << "           eta:" << _eta << std::endl;
-            std::cout << "           tau:" << _tau_mfp << std::endl;
-            std::cout << "         injection:" << std::endl;
-            std::cout << "           p0:" << _inj._p0 << std::endl;
-            std::cout << "        Gamma:" << _inj._Gamma << std::endl;
-            std::cout << "        index:" << _inj._idx << std::endl;
-            std::cout << "       p_low :" << _inj._plo << std::endl;
-            std::cout << "       p-high:" << _inj._phi << std::endl;
-            std::cout << "       ti_inj:" << _ti_inj << std::endl;
-            std::cout << "       te_inj:" << _te_inj << std::endl;
-            std::cout << "             other:" << std::endl;
-            std::cout << "          clf:" << _cfl << std::endl;
-            std::cout << " " << std::endl;
-            std::cout << " f-injection" << std::endl;
+            std::cout << " paramenters:" << '\n';
+            std::cout << "        t_init:" << _t_init << '\n';
+            std::cout << "         t_end:" << _t_end << '\n';
+            std::cout << "     momentum-grid:" << '\n';
+            std::cout << "       n-nodes:" << _num_nodes << '\n';
+            std::cout << "     transport-coeff:" << '\n';
+            std::cout << "         l_mfp:" << _lmfp << '\n';
+            std::cout << "         p_mfp:" << _pmfp << '\n';
+            std::cout << "           eta:" << _eta << '\n';
+            std::cout << "           tau:" << _tau_mfp << '\n';
+            std::cout << "         injection:" << '\n';
+            std::cout << "           p0:" << _inj._p0 << '\n';
+            std::cout << "        Gamma:" << _inj._Gamma << '\n';
+            std::cout << "        index:" << _inj._idx << '\n';
+            std::cout << "       p_low :" << _inj._plo << '\n';
+            std::cout << "       p-high:" << _inj._phi << '\n';
+            std::cout << "       ti_inj:" << _ti_inj << '\n';
+            std::cout << "       te_inj:" << _te_inj << '\n';
+            std::cout << "             other:" << '\n';
+            std::cout << "          clf:" << _cfl << '\n';
+            std::cout << " " << '\n';
+            std::cout << " f-injection" << '\n';
 
             // for (size_t ip=0; ip<_num_nodes; ip++) {
             //   const real_t p=plo * exp(ip*dlp);
             //   const int x=static_cast<int>(50*_inj(p)/_inj(plo));
-            //   if (x>=1) std::cout << std::fixed << p << " " << string(x,'*') << endl;
+            //   if (x>=1) std::cout << std::fixed << p << " " << std::string(x,'*') << '\n';
             // }
         }
 
         // write output
         output(zero, 0);
 
-        std::cout << " setup ends " << std::endl;
+        std::cout << " setup ends " << '\n';
     }
 
     // lagrangian scheme: advect f in momentum space
@@ -324,7 +324,7 @@ namespace cr_transport
                 if (pnew <= zero || pnew / pnew != one)
                     std::cout << "ip=" << ip << ", p=" << p << ", q=" << qn[ip] << ", be=" << be << ", Dp=" << Dp
                               << " hDpp=" << hDpp << ", n=" << _n << ", bb=" << bb
-                              << " beta=" << beta << ", g=" << gmma << ", pnew=" << pnew << endl;
+                              << " beta=" << beta << ", g=" << gmma << ", pnew=" << pnew << '\n';
                 assert(pnew > zero);
 
                 // p derivative of pdot
@@ -344,7 +344,7 @@ namespace cr_transport
                     //   //if (a_beg==0)
                     //   std::cout << "ip="<<ip<<", ips="<<ips<<", dtmin="<<dt_min
                     //             <<", p="<<pnew<<", pdot="<<pdot<<", dp="<<dp
-                    //             <<", dp*dpdot="<< dp*dpdotdp<<std::endl;
+                    //             <<", dp*dpdot="<< dp*dpdotdp<<'\n';
                     // }
                     dt_min = std::min(dt_min, abs(dp / (pdot + dp * dpdotdp)));
                 }
@@ -393,7 +393,7 @@ namespace cr_transport
                 if (b + 1 < _num_nodes)
                 {
                     const real_t w = (f.p - fnew[b].p) / (fnew[b + 1].p - fnew[b].p);
-                    //std::cout <<"b="<<b<<std::setprecision(18)<<", w="<<w<<", nodes="<<_num_nodes<<std::endl;
+                    //std::cout <<"b="<<b<<std::setprecision(18)<<", w="<<w<<", nodes="<<_num_nodes<<'\n';
                     assert(w >= zero - eps && w <= one + eps);
                     fnew[b].f += (one - w) * f.f;
                     fnew[b + 1].f += w * f.f;
@@ -402,7 +402,7 @@ namespace cr_transport
                     fnew[b].f += f.f;
                 else
                 {
-                    std::cout << " error: b=" << b << std::endl;
+                    std::cout << " error: b=" << b << '\n';
                     exit(0);
                 }
             }
@@ -417,7 +417,7 @@ namespace cr_transport
                 }
                 nsz -= fnew.size();
                 if (nsz > 0)
-                    std::cout << " removed " << nsz << " particles" << endl;
+                    std::cout << " removed " << nsz << " particles" << '\n';
             }
             // swap old for new
             a_f.swap(fnew);
@@ -433,7 +433,7 @@ namespace cr_transport
     size_t CRTransport::advance(const real_t a_t, const real_t a_dt)
     {
         std::cout << "  advance(beg): " << std::scientific << "by dt=" << a_dt << ", at t=" << a_t
-                  << std::endl;
+                  << '\n';
 
         // temp distr function
         std::vector<DistFunctNode> &f = _fc;
@@ -501,7 +501,7 @@ namespace cr_transport
         // new timestep
         _new_dt = dt_min;
 
-        std::cout << "  advance(end): " << std::endl;
+        std::cout << "  advance(end): " << '\n';
 
         return f.size();
     }
@@ -511,37 +511,37 @@ namespace cr_transport
     {
         if (a_step == 0)
         {
-            std::cout << "  output(beg): " << std::endl;
+            std::cout << "  output(beg): " << '\n';
 
             {   // open file, pring header, momentum grid and initial function
                 std::ofstream file(_output_filename, std::ios_base::trunc);
-                file << "# time evolution of distribution function" << std::endl;
-                file << "# first  line: num of nodes" << std::endl;
-                file << "# second line: initial time, step, p-nodes, f values at p-nodes" << std::endl;
-                file << "# ...2+nth line: nth time, step, p-nodes  and corresponding f(p)" << std::endl;
-                file << "# injection is active from: " << _ti_inj << " --to-- " << _te_inj << " Gyr" << std::endl;
-                file << "# nbins=" << _num_nodes << std::endl;
+                file << "# time evolution of distribution function" << '\n';
+                file << "# first  line: num of nodes" << '\n';
+                file << "# second line: initial time, step, p-nodes, f values at p-nodes" << '\n';
+                file << "# ...2+nth line: nth time, step, p-nodes  and corresponding f(p)" << '\n';
+                file << "# injection is active from: " << _ti_inj << " --to-- " << _te_inj << " Gyr" << '\n';
+                file << "# nbins=" << _num_nodes << '\n';
                 file.close();
             }
 
             if (_num_nu > 0)
             {   // synchrotron
                 std::ofstream file(_output_sync_spectrum, std::ios_base::trunc);
-                file << "# time evolution of synchrotron emission" << std::endl;
-                file << "# first  line: #num of frequencies, numin, numax, dln" << std::endl;
-                file << "# frequencies are const in units of critical frequecny which changes with timestep" << std::endl;
-                file << "# second line: initial time and j(nu)" << std::endl;
-                file << "# ...2+nth line: nth time and corresponding j(nu)" << std::endl;
+                file << "# time evolution of synchrotron emission" << '\n';
+                file << "# first  line: #num of frequencies, numin, numax, dln" << '\n';
+                file << "# frequencies are const in units of critical frequecny which changes with timestep" << '\n';
+                file << "# second line: initial time and j(nu)" << '\n';
+                file << "# ...2+nth line: nth time and corresponding j(nu)" << '\n';
                 file << "# nfrequencies=" << _num_nu << "   numin=" << _numin << "   numax=" << _numax
-                     << "   dlnu=" << _dlnu << std::endl;
+                     << "   dlnu=" << _dlnu << '\n';
 
                 file.close();
             }
-            std::cout << "  output(end): " << std::endl;
+            std::cout << "  output(end): " << '\n';
         }
         else if (a_t > _t_output)
         {
-            std::cout << "  output(beg): " << std::endl;
+            std::cout << "  output(beg): " << '\n';
 
             _t_output += _dt_output;
             {
@@ -552,7 +552,7 @@ namespace cr_transport
                     file << fp.p << "   ";
                 for (const auto &fp : _fc)
                     file << fp.f << "   ";
-                file << std::endl;
+                file << '\n';
 
                 file.close();
             }
@@ -644,12 +644,12 @@ namespace cr_transport
                 for (const auto j : jsy)
                     file << j << "   ";
 
-                file << std::endl;
+                file << '\n';
 
                 file.close();
-                std::cout << " ...(end): " << std::endl;
+                std::cout << " ...(end): " << '\n';
             }
-            std::cout << "  output(end): " << std::endl;
+            std::cout << "  output(end): " << '\n';
         }
     }
 } // namespace cr_transport
