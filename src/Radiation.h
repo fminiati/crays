@@ -25,11 +25,10 @@
 #include <cmath>
 #include <chrono>
 #include <functional>
+#include <string>
 #include "Macros.h"
 #include "Romberg.h"
 #include "PhysicalConstants.h"
-
-using namespace std::string_literals;
 
 namespace Radiation
 {
@@ -86,7 +85,7 @@ namespace Radiation
                         const real_t p = sqrt(_nx / sina);
                         return (_f(p) / sqrt(sina));
                     };
-                    const real_t muaf = r.integral(zero, one, 10 * _TOL, fsina, "fsina"s);
+                    const real_t muaf = r.integral(zero, one, 10 * _TOL, fsina, "fsina");
                     //const real_t muaf= r.integral(mulo,muhi,10*_TOL,fsina,"fsina");
 
                     // M.Kh.Khokonov. JETP, V.99, No.4, pp. 690-707 (2004)
@@ -99,7 +98,7 @@ namespace Radiation
                         // multiply by z to compensate dlz
                         return (z * sqrt3 * a / b * exp(-b * _x));
                     };
-                    const real_t fsy = x * r.integral(-hundred, three, _TOL, k53, "k53"s);
+                    const real_t fsy = x * r.integral(-hundred, three, _TOL, k53, "k53");
                     const real_t x5h = exp(-2.5 * a_lx);
 
                     // altern. 1.8*x^1/3*e^-x (AM Thompson A&A 1990, 240, 209-215)
@@ -113,7 +112,7 @@ namespace Radiation
 
                 // integrate in log scale
                 Romberg r;
-                a_spectrum[i] = pow(nu, 1.5) * r.integral(-hundred, three, _TOL, ksync, "ksync"s);
+                a_spectrum[i] = pow(nu, 1.5) * r.integral(-hundred, three, _TOL, ksync, "ksync");
             }
         }
     };
