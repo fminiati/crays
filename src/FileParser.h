@@ -19,7 +19,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#include <cstdlib>
+#ifndef _FILE_PARSER_H_
+#define _FILE_PARSER_H_
+
 #include <cstdlib>
 #include <cassert>
 #include <string>
@@ -27,15 +29,6 @@
 #include <fstream>
 #include <sstream>
 #include <map>
-
-using std::cerr;
-using std::endl;
-using std::istringstream;
-using std::map;
-using std::string;
-
-#ifndef _FILE_PARSER_H_
-#define _FILE_PARSER_H_
 
 class FileParser
 {
@@ -47,7 +40,7 @@ public:
     ~FileParser() {}
 
     // full constructor
-    FileParser(const string a_file_name)
+    FileParser(const std::string a_file_name)
         : m_is_defined(true)
     {
         // clear previous entries
@@ -61,21 +54,21 @@ public:
             exit(0);
         }
 
-        string s;
-        string key;
+        std::string s;
+        std::string key;
         while (getline(file, s))
         {
             // first non-blank char
-            string::size_type pos = s.find_first_not_of(" ");
+            std::string::size_type pos = s.find_first_not_of(" ");
 
             // ignore comments
-            if (pos != string::npos && s.at(pos) != '#')
+            if (pos != std::string::npos && s.at(pos) != '#')
             {
                 pos = s.find("=");
-                if (pos != string::npos)
+                if (pos != std::string::npos)
                 {
-                    istringstream ikey(s.substr(0, pos));
-                    string entry(s.substr(pos + 1, s.size() - 1));
+                    std::istringstream ikey(s.substr(0, pos));
+                    std::string entry(s.substr(pos + 1, s.size() - 1));
 
                     // remove unwanted blanks
                     // string key;
@@ -100,7 +93,7 @@ public:
     }
 
     template <class T>
-    void get_item(T &a_val, const string a_name)
+    void get_item(T &a_val, const std::string a_name)
     {
         assert(m_is_defined);
 
@@ -110,25 +103,25 @@ public:
         {
             try
             {
-                istringstream line(it->second);
+                std::istringstream line(it->second);
                 line >> a_val;
             }
             catch (std::ios_base::failure &)
             {
                 std::cout << "FileParser::get_item: error: entry was : "
-                          << it->second << endl;
+                          << it->second << '\n';
             }
         }
         else
         {
-            cerr << "FileParser::get_item: item " << a_name << " not found !" << endl;
+            std::cerr << "FileParser::get_item: item " << a_name << " not found !" << '\n';
             exit(0);
         }
     }
 
     // get a_n items into a_c container
     template <class T>
-    void get_items(T &a_c, const int a_n, const string a_name)
+    void get_items(T &a_c, const int a_n, const std::string a_name)
     {
         assert(m_is_defined);
 
@@ -141,32 +134,32 @@ public:
             {
                 a_c.resize(a_n);
 
-                istringstream line(it->second);
+                std::istringstream line(it->second);
                 for (auto &c : a_c)
                     line >> c; //*it;
             }
             catch (std::ios_base::failure &)
             {
                 std::cout << "FileParser::get_item: error: entry was : "
-                          << it->second << endl;
+                          << it->second << '\n';
             }
         }
         else
         {
-            cerr << "FileParser::get_item: item " << a_name << " not found !" << endl;
+            std::cerr << "FileParser::get_item: item " << a_name << " not found !" << '\n';
             exit(0);
         }
 
         if (a_n <= 0)
         {
-            cerr << "FileParser::get_item: " << a_name
-                 << " -- Warning: container size " << a_c.size() << endl;
+            std::cerr << "FileParser::get_item: " << a_name
+                 << " -- Warning: container size " << a_c.size() << '\n';
         }
     }
 
 protected:
     bool m_is_defined;
-    map<string, string> m_entries;
+    std::map<std::string, std::string> m_entries;
 };
 
 #endif

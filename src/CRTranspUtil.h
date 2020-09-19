@@ -19,10 +19,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
+#ifndef _CRTRANSPUTIL_
+#define _CRTRANSPUTIL_
+
 #include <vector>
 #include <iomanip>
 #include <cassert>
 #include <map>
+#include <cmath>
 #include "Macros.h"
 
 namespace cr_transport
@@ -44,7 +48,7 @@ namespace cr_transport
         std::vector<real_t> _n, _T, _B, _divv, _zeta, _t;
 
         // return variable at time t
-        real_t get(const real_t a_t, const string a_var)
+        real_t get(const real_t a_t, const std::string a_var)
         {
             assert(a_t >= _t.front() && a_t <= _t.back());
 
@@ -118,7 +122,7 @@ namespace cr_transport
         // actual function
         virtual real_t operator()(const real_t p) const
         {
-            return one / (Pi * _Gamma * _dt) / (one + pow((p - _p0) / _Gamma, _idx));
+            return one / (Pi * _Gamma * _dt) / (one + std::pow((p - _p0) / _Gamma, _idx));
         }
 
         size_t _idx;
@@ -143,7 +147,7 @@ namespace cr_transport
         {
             for (size_t b = a_beg; b < a_size; b += a_stride)
             {
-                const real_t p = _pmin * exp(b * _dlp);
+                const real_t p = _pmin * std::exp(b * _dlp);
                 a_j[b].p = p;
                 if (p >= _inject._plo && p <= _inject._phi)
                     a_j[b].f = a_dt * _inject(p);
@@ -157,3 +161,5 @@ namespace cr_transport
         I _inject;
     };
 }; // namespace cr_transport
+
+#endif

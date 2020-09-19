@@ -19,10 +19,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
+
+#ifndef _CRTRANSPORT_
+#define _CRTRANSPORT_
+
 #include <vector>
 #include <iomanip>
 #include <cassert>
 #include <map>
+#include <chrono>
+#include "CRTranspUtil.h"
 #include "Macros.h"
 
 namespace cr_transport
@@ -63,12 +69,12 @@ namespace cr_transport
     struct CRTransport
     {
         // read input and initialization
-        void setup(const string a_input);
+        void setup(const std::string a_input);
 
         // solver
         void solve()
         {
-            std::cout << " running from t=" << _t_init << " to " << _t_end << endl;
+            std::cout << " running from t=" << _t_init << " to " << _t_end << '\n';
 
             // time-integration loop
             real_t t = _t_init;
@@ -77,7 +83,7 @@ namespace cr_transport
             while (t < _t_end && step < _max_step)
             {
                 const real_t dt = timestep();
-                std::cout << "step=" << step << std::endl;
+                std::cout << "step=" << step << '\n';
 
                 try
                 {
@@ -87,7 +93,7 @@ namespace cr_transport
                 {
                     if (n < 2)
                     { // throw it a quit if left with no particles
-                        std::cout << "-- Can't integrate single node distribution function --\n program ends here!" << endl;
+                        std::cout << "-- Can't integrate single node distribution function --\n program ends here!" << '\n';
                         return;
                     }
                 }
@@ -100,15 +106,15 @@ namespace cr_transport
             auto t_end = std::chrono::high_resolution_clock::now();
             _timings["total"] += t_end - t_beg;
 
-            std::cout << " Timing:" << std::endl;
+            std::cout << " Timing:" << '\n';
             const real_t ttot = _timings["total"].count();
-            std::cout << "   total:" << ttot << " s" << std::endl;
+            std::cout << "   total:" << ttot << " s" << '\n';
             for (auto t : _timings)
             {
                 if (t.first != "total")
                 {
                     const real_t ts = t.second.count();
-                    std::cout << "   " << t.first << ":" << ts << "s, or " << ts / ttot << "% of total" << std::endl;
+                    std::cout << "   " << t.first << ":" << ts << "s, or " << ts / ttot << "% of total" << '\n';
                 }
             }
         }
@@ -132,7 +138,7 @@ namespace cr_transport
 
     private:
         // timing measurements
-        std::map<string, std::chrono::duration<real_t>> _timings;
+        std::map<std::string, std::chrono::duration<real_t>> _timings;
 
         // number of threads
         size_t _num_threads;
@@ -159,10 +165,12 @@ namespace cr_transport
         real_t _lmfp, _pmfp, _eta, _tau_mfp;
 
         // output file
-        string _output_filename, _output_sync_spectrum;
+        std::string _output_filename, _output_sync_spectrum;
         size_t _num_nu;
         real_t _numin, _numax, _dlnu;
         std::vector<real_t> _nu;
         real_t _dt_output, _t_output;
     };
 }; // namespace cr_transport
+
+#endif
