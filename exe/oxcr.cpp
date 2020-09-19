@@ -20,6 +20,7 @@
 // SOFTWARE.
 //
 #include <cstring>
+#include <string>
 #include "FileParser.h"
 #include "CRTransport.h"
 
@@ -29,10 +30,12 @@
 int main(int argc, char* argv[]) {
 
   // get input file
-  string input_file="unknown";
+  std::string input_file="unknown";
 
-  for (int i=1; i<argc; ++i) {
-    if (strncmp(argv[i],"-f",3) == 0) input_file = argv[i+1];
+  for (int i=1; i<argc; ++i)
+  {
+      if (strncmp(argv[i], "-f", 3) == 0)
+          input_file = argv[i + 1];
   }
   std::cout << " input file name is " << input_file << std::endl;
 
