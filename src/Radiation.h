@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef _RADIATION_
-#define _RADIATION_
+#ifndef RADIATION_H
+#define RADIATION_H
 
 #include <cmath>
 #include <chrono>

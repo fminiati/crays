@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef _MACROS_
-#define _MACROS_
+#ifndef MACROS_H
+#define MACROS_H
 
 // my variables
 using real_t = double;

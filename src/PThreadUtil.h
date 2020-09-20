@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef _PTHREADUTIL_
-#define _PTHREADUTIL_
+#ifndef PTHREADUTIL_H
+#define PTHREADUTIL_H
 
 #include <vector>
 #include <pthread.h>

@@ -19,9 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
-#ifndef _CRTRANSPORT_
-#define _CRTRANSPORT_
+#ifndef CRTRANSPORT_H
+#define CRTRANSPORT_H
 
 #include <vector>
 #include <iomanip>

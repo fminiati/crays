@@ -19,11 +19,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef _NEWTONRAPHSON_
-#define _NEWTONRAPHSON_
+#ifndef NEWTONRAPHSON_H
+#define NEWTONRAPHSON_H
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
 #include "Macros.h"
 
 struct NRFunct
@@ -37,7 +37,7 @@ struct NRFunct
 
 struct NewtonRaphson
 {
-    constexpr auto MAXITER = (30);
+    static constexpr int MAXITER = 30;
 
     real_t solve(NRFunct &a_f, const real_t a_tol, const real_t a_guess = zero)
     {

@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef _ROMBERG_
-#define _ROMBERG_
+#ifndef ROMBERG_H
+#define ROMBERG_H
 
 #include "Macros.h"
 #include <functional>

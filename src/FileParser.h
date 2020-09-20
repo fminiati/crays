@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef _FILE_PARSER_H_
-#define _FILE_PARSER_H_
+#ifndef FILE_PARSER_H
+#define FILE_PARSER_H
 
 #include <cstdlib>
 #include <cassert>

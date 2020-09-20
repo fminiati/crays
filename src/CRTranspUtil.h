@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef _CRTRANSPUTIL_
-#define _CRTRANSPUTIL_
+#ifndef CRTRANSPUTIL_H
+#define CRTRANSPUTIL_H
 
 #include <vector>
 #include <iomanip>
