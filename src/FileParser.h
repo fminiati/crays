@@ -19,147 +19,153 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef FILE_PARSER_H
-#define FILE_PARSER_H
+#ifndef FILEPARSER_H
+#define FILEPARSER_H
 
-#include <cstdlib>
 #include <cassert>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <map>
+#include <unordered_map>
 
-class FileParser
+namespace fm
 {
-public:
-    // null constructor
-    FileParser() : m_is_defined(false) {}
-
-    // destructor
-    ~FileParser() {}
-
-    // full constructor
-    FileParser(const std::string a_file_name)
-        : m_is_defined(true)
+    class FileParser
     {
-        // clear previous entries
-        m_entries.clear();
-        //
-        std::ifstream file(a_file_name.c_str());
-        if (!file)
+    public:
+        // destructor
+        ~FileParser() {}
+
+        // constructor
+        FileParser(const std::string a_file_name)
         {
-            std::cerr << "FileParser::define: Error while opening file!"
-                      << '\n';
-            exit(0);
+            // open and parse file
+            if (std::ifstream file(a_file_name); file)
+            {
+                bool append_entry_to_prev_key{false};
+
+                std::string line, key;
+                while (getline(file, line))
+                {
+                    // valid substr: ignorre initial blanks and commented out text
+                    const auto beg = line.find_first_not_of(' ');
+                    const auto end = line.find_first_of('#');
+                    if (end > beg)
+                    {
+                        // stop short of backslash too, indicating input continues onto next line
+                        const auto last{line.find_last_not_of("\\ #", end)};
+                        // define string to work with
+                        const std::string s{line.substr(beg, last - beg + 1)};
+
+                        if (append_entry_to_prev_key)
+                        {
+                            // add to previous key
+                            m_entries[key].append(" " + s);
+                        }
+                        else if (const auto pos = s.find('='); pos != std::string::npos)
+                        {
+                            // store key and entry separated by '=' sign
+                            key = s.substr(0, s.find_last_not_of(' ', pos - 1) + 1);
+
+                            m_entries[key] = s.substr(pos + 1);
+                        }
+
+                        // is there a backslash before commented out text ?
+                        append_entry_to_prev_key = false;
+                        auto i = 1 + last;
+                        for (; i < line.size() && line[i] == ' '; ++i)
+                        {}
+                        if (i < line.size() && line[i] == '\\')
+                            append_entry_to_prev_key = true;
+                    }
+                    else
+                    {
+                        if (append_entry_to_prev_key)
+                        {
+                            std::cerr << "\nexpecting input continuation from previous line..."
+                                         " perhaps forgot open \\ in input file!\n\n";
+                            // close file
+                            file.close();
+                            std::abort();
+                        }
+                    }
+                }
+                // close file
+                file.close();
+            }
+            else
+            {
+                std::cerr << "FileParser::define: Error while opening file!\n";
+                std::abort();
+            }
         }
 
-        std::string s;
-        std::string key;
-        while (getline(file, s))
+        // get item value of entry a_name
+        template <class T>
+        void get_item(T &a_val, const std::string a_name)
         {
-            // first non-blank char
-            std::string::size_type pos = s.find_first_not_of(" ");
-
-            // ignore comments
-            if (pos != std::string::npos && s.at(pos) != '#')
+            // search object a_name
+            if (const auto it = m_entries.find(a_name); it != m_entries.end())
             {
-                pos = s.find("=");
-                if (pos != std::string::npos)
+                try
                 {
-                    std::istringstream ikey(s.substr(0, pos));
-                    std::string entry(s.substr(pos + 1, s.size() - 1));
-
-                    // remove unwanted blanks
-                    // string key;
-                    ikey >> key;
-
-                    m_entries[key] = entry;
+                    std::istringstream line(it->second);
+                    line >> a_val;
                 }
-                else
+                catch (std::ios_base::failure &)
                 {
-                    // add to previous key
-                    m_entries[key].append(" " + s);
+                    std::cout << "FileParser::get_item: error: entry was : "
+                              << it->second << "\n";
                 }
             }
             else
             {
-                // reset key
-                key = " ";
+                std::cerr << "FileParser::get_item: item " << a_name << " not found!\n";
+                std::abort();
             }
         }
-        // close file
-        file.close();
-    }
 
-    template <class T>
-    void get_item(T &a_val, const std::string a_name)
-    {
-        assert(m_is_defined);
-
-        // search object a_name
-        auto it = m_entries.find(a_name);
-        if (it != m_entries.end())
+        // fill a_c container with (a_c.size) items from entry a_name
+        template <class T>
+        void get_items(T &a_c, const std::string a_name)
         {
-            try
+            assert(a_c.size() > 0); //"FileParser::get_items: size of "+a_name+" must be >0");
+
+            // search object a_name
+            if (const auto it = m_entries.find(a_name.c_str()); it != m_entries.end())
             {
-                std::istringstream line(it->second);
-                line >> a_val;
+                try
+                {
+                    std::istringstream line(it->second);
+                    for (auto &c : a_c)
+                        line >> c;
+                }
+                catch (std::ios_base::failure &)
+                {
+                    std::cout << "FileParser::get_item: error: entry was : "
+                              << it->second << "\n";
+                }
             }
-            catch (std::ios_base::failure &)
+            else
             {
-                std::cout << "FileParser::get_item: error: entry was : "
-                          << it->second << '\n';
+                std::cerr << "FileParser::get_item: item " << a_name << " not found!\n";
+                std::abort();
             }
         }
-        else
+
+        // flush entries
+        void flush() const
         {
-            std::cerr << "FileParser::get_item: item " << a_name << " not found !" << '\n';
-            exit(0);
-        }
-    }
-
-    // get a_n items into a_c container
-    template <class T>
-    void get_items(T &a_c, const int a_n, const std::string a_name)
-    {
-        assert(m_is_defined);
-
-        // search object a_name
-        auto it = m_entries.find(a_name.c_str());
-
-        if (it != m_entries.end())
-        {
-            try
+            for (auto [key, entry] : m_entries)
             {
-                a_c.resize(a_n);
-
-                std::istringstream line(it->second);
-                for (auto &c : a_c)
-                    line >> c; //*it;
-            }
-            catch (std::ios_base::failure &)
-            {
-                std::cout << "FileParser::get_item: error: entry was : "
-                          << it->second << '\n';
+                std::cout << "\"" << key << "\" -- \"" << entry << "\"" << '\n';
             }
         }
-        else
-        {
-            std::cerr << "FileParser::get_item: item " << a_name << " not found !" << '\n';
-            exit(0);
-        }
 
-        if (a_n <= 0)
-        {
-            std::cerr << "FileParser::get_item: " << a_name
-                 << " -- Warning: container size " << a_c.size() << '\n';
-        }
-    }
-
-protected:
-    bool m_is_defined;
-    std::map<std::string, std::string> m_entries;
-};
+    protected:
+        std::unordered_map<std::string, std::string> m_entries;
+    };
+}; // namespace fm
 
 #endif
