@@ -35,11 +35,11 @@ EXEDIR = ../exe/
 .c.o:
 	$(CC) $(OPTS) -c $<
 
-ox: $(OBJ)
+crays: $(OBJ)
 	$(CXX) ${OPTS} -o $(EXEDIR)oxcr.ex $(OBJ) $(LIBS)
 
 clean: 
-	\rm *.o *.ex
+	\rm *.o ../exe/*.ex
 
 #------------------------------------------------------------------------------
 # list of dependencies
