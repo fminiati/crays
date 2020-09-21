@@ -27,7 +27,7 @@
 #include <functional>
 #include <cassert>
 
-namespace cr_transport
+namespace fm::cr_transport
 {
     template <typename Op, typename Obj, typename V>
     struct ThreadUt
@@ -121,6 +121,6 @@ namespace cr_transport
         }
     };
 
-}; // namespace cr_transport
+}; // namespace fm::cr_transport
 
 #endif

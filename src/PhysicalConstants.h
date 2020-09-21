@@ -24,7 +24,7 @@
 
 #include "Macros.H"
 
-namespace PhysConstCgs
+namespace fm::phys_const_cgs
 {
     static constexpr real_t c = 2.99792458e10;    // speed of light
     static constexpr real_t h_p = 6.62606936e-27; // Planck constant
@@ -52,6 +52,7 @@ namespace PhysConstCgs
     static constexpr real_t T_CMB = 2.725e0;     // CMB Temperature  @z=0
     static constexpr real_t U_CMB = 4.17175e-13; // CMB Energy dens. @z=0
     static constexpr real_t n_CMB = 4.1050e2;    // CMB ph. # dens. @z=0
-};                                               // namespace PhysConstCgs
+
+}; // namespace fm::PhysConstCgs
 
 #endif

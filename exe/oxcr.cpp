@@ -24,8 +24,6 @@
 #include "FileParser.h"
 #include "CRTransport.h"
 
-//using namespace cr_transport;
-
 // main code
 int main(int argc, char* argv[]) {
 
@@ -40,10 +38,10 @@ int main(int argc, char* argv[]) {
   std::cout << " input file name is " << input_file << std::endl;
 
   // read input file
-  FileParser input(input_file);
+  fm::FileParser input(input_file);
 
     // cr transport object
-  cr_transport::CRTransport crt;
+  fm::cr_transport::CRTransport crt;
 
   std::cout << " setting up cr_transport object " << std::endl;
   crt.setup(input_file);

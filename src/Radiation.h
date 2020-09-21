@@ -30,7 +30,7 @@
 #include "Romberg.h"
 #include "PhysicalConstants.h"
 
-namespace Radiation
+namespace fm::radiation
 {
     static constexpr real_t _TOL = 5.e-3;
 
@@ -116,6 +116,6 @@ namespace Radiation
             }
         }
     };
-}; // namespace Radiation
+}; // namespace fm::Radiation
 
 #endif

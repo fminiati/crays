@@ -30,7 +30,7 @@
 #include "CRTranspUtil.h"
 #include "Macros.h"
 
-namespace cr_transport
+namespace fm::cr_transport
 {
     struct CRTranspOp
     {
@@ -170,6 +170,6 @@ namespace cr_transport
         std::vector<real_t> _nu;
         real_t _dt_output, _t_output;
     };
-}; // namespace cr_transport
+}; // namespace fm::cr_transport
 
 #endif

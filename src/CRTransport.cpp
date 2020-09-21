@@ -30,8 +30,6 @@
 #include "PThreadUtil.h"
 #include "Radiation.h"
 
-using namespace Radiation;
-
 template <typename C>
 void plot_histo(const C &c, const size_t n, const std::string&& s = {})
 {
@@ -51,8 +49,10 @@ void plot_histo(const C &c, const size_t n, const std::string&& s = {})
 };
 
 
-namespace cr_transport
+namespace fm::cr_transport
 {
+    using namespace fm;
+    using namespace fm::radiation;
     using dfnode_t = std::vector<DistFunctNode>;
 
     void CRTransport::setup(const std::string a_file)
@@ -68,7 +68,7 @@ namespace cr_transport
 
         real_t unitTime = one;
         input.get_item(unitTime, "crt.unit_of_time[Gyr]");
-        _unit_time_sec = unitTime * 1.e9 * PhysConstCgs::yr;
+        _unit_time_sec = unitTime * 1.e9 * phys_const_cgs::yr;
 
         // time
         input.get_item(_t_init, "crt.initial_time[Gyr]");
@@ -102,17 +102,18 @@ namespace cr_transport
         {   // icm model
             // dens must be in cm^-3 and B in G
             int n_steps = 0;
+            _icm.resize(n_steps);
             input.get_item(n_steps, "crt.icm_model.num_steps");
-            input.get_items(_icm._t, n_steps, "crt.icm_model.time[sec]");
-            input.get_items(_icm._n, n_steps, "crt.icm_model.gas_num_dens[cm^-3]");
-            input.get_items(_icm._T, n_steps, "crt.icm_model.gas_temperature[keV]");
-            input.get_items(_icm._B, n_steps, "crt.icm_model.magnetic_field[G]");
-            input.get_items(_icm._divv, n_steps, "crt.icm_model.dv_turb_at_ell[km/sec]");
+            input.get_items(_icm._t, "crt.icm_model.time[sec]");
+            input.get_items(_icm._n, "crt.icm_model.gas_num_dens[cm^-3]");
+            input.get_items(_icm._T, "crt.icm_model.gas_temperature[keV]");
+            input.get_items(_icm._B, "crt.icm_model.magnetic_field[G]");
+            input.get_items(_icm._divv, "crt.icm_model.dv_turb_at_ell[km/sec]");
             input.get_item(_icm._ell, "crt.icm_model.ell_of_dv_turb[kpc]");
-            input.get_items(_icm._zeta, n_steps, "crt.icm_model.pwrlaw_idx_dv_turb");
+            input.get_items(_icm._zeta, "crt.icm_model.pwrlaw_idx_dv_turb");
 
             // normalise
-            _icm._ell *= PhysConstCgs::kpc;
+            _icm._ell *= phys_const_cgs::kpc;
             for (auto &t : _icm._t)
                 t /= _unit_time_sec;
             std::cout << "times: ";
@@ -126,14 +127,14 @@ namespace cr_transport
             input.get_item(_eta, "crt.cr_model.pwrlaw_idx_mfp");
 
             // normalise
-            _lmfp *= PhysConstCgs::kpc;
+            _lmfp *= phys_const_cgs::kpc;
             // flight time across mean-free-path
-            _tau_mfp = _lmfp / PhysConstCgs::c / _unit_time_sec;
+            _tau_mfp = _lmfp / phys_const_cgs::c / _unit_time_sec;
         }
 
         {   // rescale turb velocity increment to mfp scale and convert to <div(v)>
             // normalization factor
-            const real_t A = PhysConstCgs::km / _lmfp * _unit_time_sec;
+            const real_t A = phys_const_cgs::km / _lmfp * _unit_time_sec;
             const real_t x = log(_lmfp / _icm._ell);
             for (size_t t = 0; t < _icm._divv.size(); ++t)
             {
@@ -187,7 +188,7 @@ namespace cr_transport
             const real_t beta = pav / gmma;
             const real_t aa = 1.50e-14 * (73.56e0 + log(gmma)) / (beta * beta) * _unit_time_sec;
             const real_t bb = 1.395e-16 * (log(two * gmma) - one / three) / (beta * beta) * _unit_time_sec;
-            const real_t cc = 3.28e-8 * PhysConstCgs::U_CMB / beta * _unit_time_sec;
+            const real_t cc = 3.28e-8 * phys_const_cgs::U_CMB / beta * _unit_time_sec;
             const real_t aa2 = -1.50e-14 * _unit_time_sec;
 
             // transport coeff
@@ -269,7 +270,7 @@ namespace cr_transport
             real_t dt_min = huge;
 
             // total energy density with B in units of CMB energy density
-            const real_t Bcmb = sqrt(8 * Pi * PhysConstCgs::U_CMB);
+            const real_t Bcmb = sqrt(8 * Pi * phys_const_cgs::U_CMB);
             const real_t Ue = one + _B * _B / (Bcmb * Bcmb);
             const real_t logn = log(_n);
 
@@ -279,7 +280,7 @@ namespace cr_transport
                 const real_t p = a_fc[ip].p;
 
                 // CMB energy density at z=0
-                constexpr auto UCMB = PhysConstCgs::U_CMB;
+                constexpr auto UCMB = phys_const_cgs::U_CMB;
 
                 const real_t gmma = sqrt(one + p * p);
                 const real_t beta = p / gmma;
@@ -606,10 +607,10 @@ namespace cr_transport
                 // get magnetic field is in G
                 const real_t B = _icm.get(a_t, "mag-field");
                 // critical frequency in GHz
-                using namespace PhysConstCgs;
+                using namespace phys_const_cgs;
                 const real_t nc = 1.e-9 * 1.5 * e * B / (two * Pi * m_e * c);
                 // radiation object
-                Radiation::Synchrotron rad(fs.front().p, fs.back().p, fp);
+                Synchrotron rad(fs.front().p, fs.back().p, fp);
                 // emission and frequency
                 std::vector<real_t> jsy(_num_nu, zero);
                 // scale emission freuency around some peak energy
@@ -652,4 +653,4 @@ namespace cr_transport
             std::cout << "  output(end): " << '\n';
         }
     }
-} // namespace cr_transport
+} // namespace fm::cr_transport

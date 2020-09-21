@@ -29,7 +29,7 @@
 #include <cmath>
 #include "Macros.h"
 
-namespace cr_transport
+namespace fm::cr_transport
 {
     // time dependent model of plasma:
     // n=number density, T=temperature, B=magnetic field
@@ -42,6 +42,17 @@ namespace cr_transport
             : _it(0) {}
 
         ~PlasmaModel() {}
+
+        // resize containers
+        void resize(const int a_size)
+        {
+            _n.resize(a_size);
+            _T.resize(a_size);
+            _B.resize(a_size);
+            _divv.resize(a_size);
+            _zeta.resize(a_size);
+            _t.resize(a_size);
+        }
 
         // data
         real_t _ell;
@@ -160,6 +171,6 @@ namespace cr_transport
         // injection funtion: returns f(p)
         I _inject;
     };
-}; // namespace cr_transport
+}; // namespace fm::cr_transport
 
 #endif
