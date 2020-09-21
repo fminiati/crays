@@ -104,8 +104,9 @@ namespace fm::cr_transport
         {   // icm model
             // dens must be in cm^-3 and B in G
             int n_steps = 0;
-            _icm.resize(n_steps);
             input.get_item(n_steps, "crt.icm_model.num_steps");
+
+            _icm.resize(n_steps);
             input.get_items(_icm._t, "crt.icm_model.time[sec]");
             input.get_items(_icm._n, "crt.icm_model.gas_num_dens[cm^-3]");
             input.get_items(_icm._T, "crt.icm_model.gas_temperature[keV]");
