@@ -28,7 +28,8 @@
 #include <map>
 #include <chrono>
 #include "CRTranspUtil.h"
-#include "Macros.h"
+#include "Real.h"
+#include "Constants.h"
 
 namespace fm::cr_transport
 {

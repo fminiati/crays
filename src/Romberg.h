@@ -22,7 +22,6 @@
 #ifndef ROMBERG_H
 #define ROMBERG_H
 
-#include "Macros.h"
 #include <functional>
 #include <cmath>
 #include <iostream>
@@ -32,24 +31,28 @@
 namespace fm {
     struct Romberg
     {
-        real_t integral(const real_t a, const real_t b, const real_t tol,
-                        std::function<real_t(const real_t)> f, const std::string &&s = {})
+        double integral(const double a, const double b, const double tol,
+                        std::function<double(const double)> f, const std::string &&s = {})
         {
-            static const size_t ROMB_MAXITER = 20;
-            static const size_t ROMB_MINITER = 3;
-            static const size_t MAXJ = 5;
-            static const real_t ROMB_UNDERFLOW = 1.e-50;
+            static constexpr double zero = 0.0e0;
+            static constexpr double half = 0.5e0;
+            static constexpr double one = 1.0e0;
+            static constexpr double four = 4.0e0;
+            static constexpr double ROMB_UNDERFLOW = 1.e-50;
+            static constexpr size_t ROMB_MAXITER = 20;
+            static constexpr size_t ROMB_MINITER = 3;
+            static constexpr size_t MAXJ = 5;
 
-            real_t h = half * (b - a);
-            real_t gmax = h * (f(a) + f(b));
-            real_t g[MAXJ + 1];
+            double h = half * (b - a);
+            double gmax = h * (f(a) + f(b));
+            double g[MAXJ + 1];
             g[0] = gmax;
 
-            real_t error = 1.e9;
+            double error = 1.e9;
             size_t nint = 1;
             size_t iter = 0;
 
-            real_t g0;
+            double g0;
             while ((std::abs(error) > tol || iter < ROMB_MINITER) && iter < ROMB_MAXITER)
             {
                 // Calculate next trapezoidal rule approximation to integral.
@@ -65,13 +68,13 @@ namespace fm {
                 h *= half;
                 nint *= 2;
                 size_t jmax = iter < MAXJ ? iter : MAXJ;
-                real_t fourj = one;
+                double fourj = one;
 
                 for (size_t j = 0; j < jmax; j++)
                 {
                     // apply Richardson's extrapolation.
                     fourj = four * fourj;
-                    real_t g1 = g0 + (g0 - g[j]) / (fourj - one);
+                    double g1 = g0 + (g0 - g[j]) / (fourj - one);
                     g[j] = g0;
                     g0 = g1;
                 }

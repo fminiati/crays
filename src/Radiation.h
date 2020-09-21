@@ -26,7 +26,8 @@
 #include <chrono>
 #include <functional>
 #include <string>
-#include "Macros.h"
+#include "Real.h"
+#include "Constants.h"
 #include "Romberg.h"
 #include "PhysicalConstants.h"
 

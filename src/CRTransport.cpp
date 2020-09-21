@@ -23,6 +23,8 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include "Real.h"
+#include "Constants.h"
 #include "FileParser.h"
 #include "PhysicalConstants.h"
 #include "CRTransport.h"
@@ -336,7 +338,7 @@ namespace fm::cr_transport
 
                 // update max cooling rate
                 const real_t pdot = -(ae + half * (p + pnew) * (be + ce * half * (p + pnew)));
-                const long long int ips = ip + SGN(pdot);
+                const long long int ips = ip + (pdot >= 0 ? 1 : -1); // sign(pdot)
                 if (ips >= 0 && ips < a_fc.size())
                 {
                     const real_t dp = _cfl * (a_fc[ips].p - a_fc[ip].p);

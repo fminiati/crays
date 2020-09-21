@@ -27,7 +27,8 @@
 #include <cassert>
 #include <map>
 #include <cmath>
-#include "Macros.h"
+#include "Real.h"
+#include "Constants.h"
 
 namespace fm::cr_transport
 {

@@ -24,39 +24,43 @@
 
 #include <cmath>
 #include <iostream>
-#include "Macros.h"
 
 namespace fm {
     struct NRFunct
     {
         // evaluate the function
-        virtual real_t eval(const real_t q) const = 0;
+        virtual double eval(const double q) const = 0;
 
         // evaluate the function derivative
-        virtual real_t derivative(const real_t q) const = 0;
+        virtual double derivative(const double q) const = 0;
     };
 
     struct NewtonRaphson
     {
+        static constexpr double zero = 0.0;
+        static constexpr double half = 0.5;
+        static constexpr double one = 1.0;
+        static constexpr double small = 1.e-6;
+        static constexpr double tiny = 1.e-9;
         static constexpr int MAXITER = 30;
 
-        real_t solve(NRFunct &a_f, const real_t a_tol, const real_t a_guess = zero)
+        double solve(NRFunct &a_f, const double a_tol, const double a_guess = zero)
         {
             // initialize
-            real_t s = a_guess;
-            real_t err = one;
+            double s = a_guess;
+            double err = one;
             int iter = 0;
 
             while (std::abs(err) > a_tol && iter < MAXITER)
             {
                 iter++;
 
-                const real_t f = a_f.eval(s);
-                real_t df = a_f.derivative(s);
+                const double f = a_f.eval(s);
+                double df = a_f.derivative(s);
                 if (std::abs(df) < tiny * f)
-                    df = SGN(df) * tiny;
+                    df = (df >= 0 ? 1 : -1) * tiny;
 
-                real_t ds = -f / df;
+                double ds = -f / df;
                 if (ds * err < zero)
                     ds *= half;
                 s += ds;
